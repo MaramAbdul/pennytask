@@ -13,7 +13,7 @@ import { userReducer } from './store/user.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptorsFromDi()),  // ✅ This allows interceptors to be injected dynamically
+    provideHttpClient(withInterceptorsFromDi()), 
     provideStore({ user: userReducer }),
     provideEffects([]),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),

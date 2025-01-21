@@ -12,25 +12,24 @@ import { DatabaseComponent } from './pages/database/database.component';
 import { GeneraldocsComponent } from './pages/generaldocs/generaldocs.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent }, // Landing Page (No Sidebar)
+  { path: '', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  // 🔥 Dashboard with Nested Routes
   {
     path: 'dashboard',
     component: DashboardComponent,
-    canActivate: [AuthGuard], // Protect this route
+    canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: 'general', pathMatch: 'full' }, // Default route inside dashboard
-      { path: 'general', component: GeneraldocsComponent }, // Main Dashboard Content
+      { path: '', redirectTo: 'general', pathMatch: 'full' },
+      { path: 'general', component: GeneraldocsComponent },
       { path: 'backend', component: BackendComponent },
       { path: 'frontend', component: FrontendComponent },
       { path: 'database', component: DatabaseComponent }
     ]
   },
 
-  { path: '**', redirectTo: 'login' } // Redirect unknown routes
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
