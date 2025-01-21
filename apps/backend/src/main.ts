@@ -9,7 +9,7 @@ import { AppModule } from './app/app.module';
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 async function bootstrap() {
   // Connect to MongoDB
@@ -24,9 +24,9 @@ async function bootstrap() {
   // Start NestJS Application
   const app = await NestFactory.create(AppModule);
 
-  // ✅ Enable CORS to allow frontend to communicate with backend
+  // enabling cors 
   app.enableCors({
-    origin: 'http://localhost:4200', // Allow frontend
+    origin: 'http://localhost:4200',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,

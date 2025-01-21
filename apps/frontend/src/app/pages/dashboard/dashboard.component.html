@@ -1,18 +1,9 @@
-<div
-    class="flex flex-col justify-center items-center h-screen bg-gradient-to-r from-blue-500 via-indigo-500 to-indigo-600 text-white">
-    <div class="p-10 w-full max-w-md text-center">
-        <h1 class="text-4xl font-extrabold text-yellow-300">Welcome, {{ (user$ | async)?.name || 'Guest' }}! 👋</h1>
-        <p class="text-lg text-gray-100 mt-3"><strong>Email:</strong> {{ (user$ | async)?.email || 'Not Available' }}
-        </p>
-        <p class="text-lg text-gray-100 mt-2"><strong>User ID:</strong> {{ (user$ | async)?.id || 'Not Available' }}</p>
+<div class="flex flex-col md:flex-row h-screen ">
+    <!-- Sidebar -->
+    <app-sidebar class="w-full md:w-64"></app-sidebar>
 
-        <button (click)="logout()"
-            class="mt-6 w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-md">
-            Logout
-        </button>
-    </div>
-
-    <div class="absolute bottom-6 text-sm opacity-80">
-        <p>&copy; 2025 PennyTask. All rights reserved.</p>
+    <!-- Main Content Area -->
+    <div class="flex-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-indigo-600 text-white p-10 overflow-y-auto">
+        <router-outlet></router-outlet>
     </div>
 </div>

@@ -1,0 +1,105 @@
+<div class="p-10 text-white h-full overflow-y-auto">
+    <h1 class="text-3xl font-bold mb-4">Frontend Documentation (Angular + Nx)</h1>
+    <p class="mb-6">This document provides an overview of the frontend structure, authentication flow, and state
+        management in our Angular project.</p>
+
+    <!-- Technology Stack -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🛠️ Technology Stack</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>🔹 <strong>Framework:</strong> Angular</li>
+        <li>🔹 <strong>State Management:</strong> NgRx (Redux for Angular)</li>
+        <li>🔹 <strong>Routing:</strong> Angular Router</li>
+        <li>🔹 <strong>Authentication:</strong> JWT-based authentication</li>
+        <li>🔹 <strong>HTTP Interceptors:</strong> Handles auth tokens & API requests</li>
+        <li>🔹 <strong>Styling:</strong> Tailwind CSS</li>
+        <li>🔹 <strong>Monorepo:</strong> Nx Workspace</li>
+    </ul>
+
+    <!-- Project Structure -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📂 Project Structure</h2>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+/apps
+│── frontend/              # Frontend Angular Application
+│   ├── src/
+│   │   ├── app/           # Main Application Module
+│   │   ├── components/    # Shared UI Components
+│   │   │   ├── header/    # Navbar/Header Component
+│   │   │   ├── sidebar/   # Sidebar Component
+│   │   ├── guards/        # Route Guards (Auth Protection)
+│   │   ├── interceptors/  # HTTP Interceptors for API Requests
+│   │   ├── pages/         # Page Components (Dashboard, Login, etc.)
+│   │   │   ├── backend/
+│   │   │   ├── dashboard/
+│   │   │   ├── database/
+│   │   │   ├── frontend/
+│   │   │   ├── generaldocs/
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   ├── services/      # Business Logic (Auth, API calls)
+│   │   ├── store/         # NgRx State Management
+│   │   │   ├── user.actions.ts
+│   │   │   ├── user.reducer.ts
+│   │   │   ├── user.selectors.ts
+│   │   │   ├── user.state.ts
+│   ├── app.routes.ts      # Angular Routes
+│   ├── app.component.ts   # Root Component
+│   ├── app.config.ts      # App Configuration
+│   ├── index.html         # Main HTML Entry
+│   ├── styles.css         # Global Styles
+    </pre>
+
+    <!-- Authentication Flow -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🔐 Authentication Flow</h2>
+    <p>Our application uses JWT-based authentication with route guards.</p>
+    <ol class="list-decimal ml-6 space-y-2">
+        <li>User enters credentials on <strong>Login Page</strong>.</li>
+        <li>Frontend sends request to <strong>POST /api/auth/login</strong>.</li>
+        <li>Backend validates the credentials and returns a <strong>JWT token</strong>.</li>
+        <li>Token is stored in <strong>LocalStorage</strong>.</li>
+        <li>All API requests include the <strong>Authorization: Bearer [TOKEN]</strong> header.</li>
+        <li>If token expires (after 8 hours), user is logged out automatically.</li>
+    </ol>
+
+    <!-- State Management (NgRx) -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📦 State Management (NgRx)</h2>
+    <p>We use <strong>NgRx</strong> to manage global state for authentication and user data.</p>
+    <ul class="list-disc ml-6 space-y-2">
+        <li><strong>user.state.ts</strong>: Defines initial user state.</li>
+        <li><strong>user.actions.ts</strong>: Defines actions (LOGIN, LOGOUT, SET_USER).</li>
+        <li><strong>user.reducer.ts</strong>: Handles state changes based on actions.</li>
+        <li><strong>user.selectors.ts</strong>: Provides easy access to user state.</li>
+    </ul>
+
+    <!-- Angular Routing -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🛤️ Routing</h2>
+    <p>Angular routing is defined in <code>app.routes.ts</code>.</p>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+
+const routes: Routes = [
+&#123; path: '', component: LandingComponent &#125;
+&#123; path: 'login', component: LoginComponent &#125;
+&#123; path: 'register', component: RegisterComponent &#125;
+&#123;
+path: 'dashboard',
+component: DashboardComponent,
+canActivate: [AuthGuard], // Protect dashboard
+children: [
+&#123; path: 'generaldocs', component: GeneralDocsComponent &#125;
+&#123; path: 'backend', component: BackendComponent &#125;
+&#123; path: 'frontend', component: FrontendComponent &#125;
+&#123; path: 'database', component: DatabaseComponent &#125;
+]
+&#125;
+&#123; path: '**', redirectTo: 'login' &#125; // Redirect unknown routes
+];
+    </pre>
+
+    <!-- Notes -->
+<!-- Notes -->
+<h2 class="text-2xl font-semibold mt-6 mb-3">📌 Notes</h2>
+<ul class="list-disc ml-6 space-y-2">
+    <li>JWT tokens are stored in <strong>LocalStorage</strong>.</li>
+    <li>Use <strong>NgRx Selectors</strong> to get user authentication state.</li>
+    <li>Ensure <strong>AuthInterceptor</strong> is registered in `providers` in <code>app.config.ts</code>.</li>
+</ul>
+</div>

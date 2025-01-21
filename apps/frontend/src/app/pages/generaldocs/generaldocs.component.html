@@ -1,0 +1,85 @@
+<div class="p-10 text-white h-full overflow-y-auto">
+    <h1 class="text-3xl font-bold mb-4">PennyTask - General Documentation</h1>
+    <p class="mb-6">
+        Welcome to the PennyTask documentation. This project is built using a **Monorepo Architecture** with **Nx**,
+        where both the **Frontend (Angular)** and **Backend (NestJS + MongoDB)** are managed within the same repository.
+    </p>
+
+    <!-- Technology Stack -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🛠️ Technology Stack</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>🔹 <strong>Monorepo:</strong> Nx Workspace</li>
+        <li>🔹 <strong>Frontend:</strong> Angular (Standalone API)</li>
+        <li>🔹 <strong>Backend:</strong> NestJS</li>
+        <li>🔹 <strong>Database:</strong> MongoDB (Using Mongoose ORM)</li>
+        <li>🔹 <strong>State Management:</strong> NgRx (Redux for Angular)</li>
+        <li>🔹 <strong>Authentication:</strong> JWT-based authentication (8-hour sessions)</li>
+        <li>🔹 <strong>Styling:</strong> Tailwind CSS</li>
+    </ul>
+
+    <!-- Monorepo Structure -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📂 Monorepo Structure</h2>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+/pennytask
+│── apps/
+│   │── backend/        # NestJS Backend (MongoDB)
+│   │── frontend/       # Angular Frontend
+│── libs/               # Shared Libraries (if any)
+│── .nx/                # Nx Configuration
+│── package.json        # Dependencies
+│── nx.json             # Nx Settings
+│── tsconfig.base.json  # TypeScript Configuration
+    </pre>
+
+    <!-- Database Configuration (MongoDB) -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🛢️ Database Configuration (MongoDB)</h2>
+    <p>We use **MongoDB** as our primary database with **Mongoose** as the ORM.</p>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>The database connection string is configured in the `.env` file.</li>
+        <li>All data models are defined in the `models/` directory.</li>
+        <li>MongoDB stores users and session data.</li>
+    </ul>
+
+
+    <!-- How Backend & Frontend Communicate -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🔗 Backend & Frontend Communication</h2>
+    <p>The **Frontend (Angular)** communicates with the **Backend (NestJS + MongoDB)** via REST API calls.</p>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>The **Frontend** makes HTTP requests using `HttpClientModule`.</li>
+        <li>The **Backend** provides APIs using `&#64;nestjs/common`.</li>
+        <li>All requests are secured using **JWT authentication**.</li>
+    </ul>
+
+    <!-- Development Setup -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">⚙️ Development Setup</h2>
+    <p>Follow these steps to set up the project locally.</p>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Step 1: Install Dependencies</h3>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">$ npm install</pre>
+    <h3 class="text-xl font-semibold mt-4">🔹 Step 2: Run Backend</h3>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">$ npx nx serve backend</pre>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Step 3: Run Frontend</h3>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">$ npx nx serve frontend</pre>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Step 4: Open in Browser</h3>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">http://localhost:4200</pre>
+
+    <!-- Authentication Overview -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🔐 Authentication Overview</h2>
+    <p>We use JWT authentication with an 8-hour session expiration.</p>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>Users authenticate via **POST /api/auth/login**.</li>
+        <li>Tokens are stored in **LocalStorage** on the frontend.</li>
+        <li>Protected routes require **Authorization: Bearer [TOKEN]**.</li>
+        <li>Sessions expire after **8 hours**, requiring re-login.</li>
+    </ul>
+
+    <!-- Notes -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📌 Notes</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>Ensure `.env` is properly configured for MongoDB connection.</li>
+        <li>Use **NgRx Selectors** to access user authentication state.</li>
+        <li>Run `npx nx serve backend` and `npx nx serve frontend` to start development.</li>
+    </ul>
+</div>

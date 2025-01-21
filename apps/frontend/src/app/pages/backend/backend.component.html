@@ -1,0 +1,102 @@
+<div class="p-10 text-white">
+    <h1 class="text-3xl font-bold mb-4">Backend Documentation (NestJS)</h1>
+    <p class="mb-6">This document outlines the structure, authentication flow, and session management in our NestJS
+        backend.</p>
+
+    <!-- Technology Stack -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🛠️ Technology Stack</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>🔹 <strong>Framework:</strong> NestJS (Node.js + TypeScript)</li>
+        <li>🔹 <strong>Database:</strong> (Specify: PostgreSQL / MongoDB)</li>
+        <li>🔹 <strong>Authentication:</strong> JWT (JSON Web Tokens) with 8-hour sessions</li>
+        <li>🔹 <strong>ORM:</strong>  Mongoose</li>
+        <li>🔹 <strong>Monorepo:</strong> Nx workspace</li>
+        <li>🔹 <strong>Frontend:</strong> Angular (Managed inside the same monorepo)</li>
+    </ul>
+
+    <!-- Project Structure -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📂 Project Structure</h2>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">
+/apps
+│── backend/                  # Backend NestJS Application
+│   ├── src/
+│   │   ├── app/              # Main App Module
+│   │   ├── auth/             # Authentication Module
+│   │   │   ├── dto/          # Data Transfer Objects (DTOs)
+│   │   │   │   ├── login.dto.ts
+│   │   │   │   ├── signup.dto.ts
+│   │   │   ├── auth.controller.ts  # Handles auth API endpoints
+│   │   │   ├── auth.module.ts      # Auth module setup
+│   │   │   ├── auth.service.ts     # Authentication logic
+│   │   │   ├── jwt.strategy.ts     # JWT strategy for session handling
+│   │   ├── config/          # Configuration files (e.g., database, env settings)
+│   │   ├── models/          # Database Models (e.g., User model)
+│   │   │   ├── user.model.ts
+│   │   ├── main.ts          # Main entry point for NestJS
+│   ├── .env                 # Environment variables (JWT secrets, database, etc.)
+│── frontend/                 # Angular Frontend (in the same monorepo)
+    </pre>
+
+    <!-- Authentication Flow -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🔐 Authentication Flow</h2>
+    <p>We use JWT-based authentication with an 8-hour session expiration.</p>
+    <ol class="list-decimal ml-6 space-y-2">
+        <li>User sends credentials to <strong>POST /api/auth/login</strong>.</li>
+        <li>Server validates user and issues a **JWT token** with an 8-hour expiry.</li>
+        <li>User includes this token in **Authorization: Bearer [TOKEN]** header for every request.</li>
+        <li>Backend validates the token using `jwt.strategy.ts`.</li>
+        <li>Once the token expires, the user must **re-authenticate**.</li>
+    </ol>
+
+    <!-- API Endpoints -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📡 API Endpoints</h2>
+    <table class="w-full border border-gray-700 text-sm">
+        <thead class="bg-gray-900">
+            <tr>
+                <th class="p-2 border border-gray-700">Method</th>
+                <th class="p-2 border border-gray-700">Endpoint</th>
+                <th class="p-2 border border-gray-700">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-gray-800">
+                <td class="p-2 border border-gray-700">POST</td>
+                <td class="p-2 border border-gray-700">/api/auth/login</td>
+                <td class="p-2 border border-gray-700">User login (returns JWT token)</td>
+            </tr>
+            <tr class="bg-gray-700">
+                <td class="p-2 border border-gray-700">POST</td>
+                <td class="p-2 border border-gray-700">/api/auth/register</td>
+                <td class="p-2 border border-gray-700">User registration</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Key File Descriptions -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📜 Key Files</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li><strong>auth.controller.ts:</strong> Handles login and register API requests.</li>
+        <li><strong>auth.service.ts:</strong> Handles authentication logic, password hashing, token generation.</li>
+        <li><strong>jwt.strategy.ts:</strong> Validates JWT tokens for secure requests.</li>
+        <li><strong>dto/login.dto.ts & signup.dto.ts:</strong> Defines expected request body formats.</li>
+        <li><strong>models/user.model.ts:</strong> Defines the user schema.</li>
+        <li><strong>config/*.ts:</strong> Handles database and environment configurations.</li>
+    </ul>
+
+    <!-- Environment Configuration -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">⚙️ Environment Configuration</h2>
+    <p>The `.env` file contains all the important configurations:</p>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">
+JWT_SECRET=jwt_secret
+JWT_EXPIRATION=8h
+DATABASE_URL=database_url
+    </pre>
+
+    <!-- Notes -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📌 Notes</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>The **JWT token expires after 8 hours**, requiring re-login.</li>
+        <li>Use **Postman** or **cURL** for API testing.</li>
+        <li>Ensure **.env** file is correctly configured with database & JWT secrets.</li>
+    </ul>
+</div>

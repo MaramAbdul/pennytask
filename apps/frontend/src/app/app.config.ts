@@ -4,6 +4,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+
 
 import { routes } from './app.routes';
 import { userReducer } from './store/user.reducer';
@@ -15,5 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({ user: userReducer }),
     provideEffects([]),
     provideStoreDevtools({ maxAge: 25, logOnly: false }),
+    
   ],
+  
 };

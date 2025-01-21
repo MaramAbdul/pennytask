@@ -1,0 +1,136 @@
+<div class="p-10 text-white h-full overflow-y-auto">
+    <h1 class="text-3xl font-bold mb-4">Database Documentation (MongoDB in PennyTask)</h1>
+    <p class="mb-6">
+        This document explains how **MongoDB** is used in PennyTask,
+        including schema definitions, database connection, and query operations.
+    </p>
+
+    <!-- Database Setup in This Project -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🛢️ How MongoDB Works in PennyTask</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>🔹 We use **MongoDB** as our database.</li>
+        <li>🔹 **Mongoose** is used to define schemas and interact with the database.</li>
+        <li>🔹 The database is configured in **`.env`**, and managed in **NestJS `config` folder**.</li>
+        <li>🔹 The main collections used are:
+            <ul class="list-disc ml-6">
+                <li><strong>Users:</strong> Stores user details (name, email, password).</li>
+                <li><strong>Sessions:</strong> Stores session tokens and expiry times.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- Database Connection -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">⚙️ How We Connect to MongoDB</h2>
+    <p>MongoDB is connected via Mongoose inside `app.module.ts`.</p>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 `.env` Configuration (Your Project)</h3>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm">
+MONGO_URI=mongodb://localhost:27017/pennytask
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Database Connection (Defined in NestJS)</h3>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+import &#123; MongooseModule &#125; from '&#64;nestjs/mongoose';
+
+&#64;Module(&#123;
+  imports: [
+    MongooseModule.forRoot(process.env.MONGO_URI),
+  ],
+&#125;)
+export class AppModule &#123;&#125;
+    </pre>
+
+    <!-- Users Collection in Your Project -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">👤 Users Collection (Schema & Model)</h2>
+    <p>This is the **User schema** used in our project.</p>
+
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+import &#123; Prop, Schema, SchemaFactory &#125; from '&#64;nestjs/mongoose';
+import &#123; Document &#125; from 'mongoose';
+
+export type UserDocument = User & Document;
+
+&#64;Schema()
+export class User &#123;
+  &#64;Prop(&#123; required: true &#125;)
+  name: string;
+
+  &#64;Prop(&#123; required: true, unique: true &#125;)
+  email: string;
+
+  &#64;Prop(&#123; required: true &#125;)
+  password: string;
+&#125;
+
+export const UserSchema = SchemaFactory.createForClass(User);
+    </pre>
+
+    <!-- Sessions Collection in Your Project -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">🔐 Sessions Collection (User Login Sessions)</h2>
+    <p>This schema is used to manage user sessions and store JWT tokens.</p>
+
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+&#64;Schema()
+export class Session &#123;
+  &#64;Prop(&#123; required: true &#125;)
+  userId: string;
+
+  &#64;Prop(&#123; required: true &#125;)
+  token: string;
+
+  &#64;Prop(&#123; default: () => new Date(Date.now() + 8 * 60 * 60 * 1000) &#125;)
+  expiresAt: Date;
+&#125;
+
+export const SessionSchema = SchemaFactory.createForClass(Session);
+    </pre>
+
+    <!-- Common Database Operations in Your Project -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📡 How We Query the Database</h2>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Create a New User</h3>
+    <p>Used in **auth.service.ts** when a user registers.</p>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+const newUser = new UserModel(&#123; 
+  name: 'John Doe',
+  email: 'user&#64;example.com', 
+  password: 'hashedpassword' 
+&#125;);
+await newUser.save();
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Find a User by Email (Used for Login)</h3>
+    <p>Used in **auth.service.ts** to verify login credentials.</p>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+const user = await UserModel.findOne(&#123; email: 'user&#64;example.com' &#125;);
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Store a New Session Token</h3>
+    <p>When a user logs in, we store their session token.</p>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+const newSession = new SessionModel(&#123; 
+  userId: user._id, 
+  token: 'jwt-token-here' 
+&#125;);
+await newSession.save();
+    </pre>
+
+    <h3 class="text-xl font-semibold mt-4">🔹 Check If a Session is Valid</h3>
+    <p>Used in **AuthGuard** to validate user sessions.</p>
+    <pre class="bg-gray-900 p-4 rounded-md text-sm" ngNonBindable>
+const session = await SessionModel.findOne(&#123; 
+  userId: user._id, 
+  token: 'jwt-token-here', 
+  expiresAt: &#123; $gt: new Date() &#125; 
+&#125;);
+    </pre>
+
+    <!-- Notes -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">📌 Notes</h2>
+    <ul class="list-disc ml-6 space-y-2">
+        <li>Ensure **MongoDB is running** before starting the backend.</li>
+        <li>Indexes are used on **email** fields for faster queries.</li>
+        <li>Use **Mongoose Middleware** for password hashing before saving users.</li>
+        <li>JWT sessions automatically **expire after 8 hours**, requiring login.</li>
+    </ul>
+</div>

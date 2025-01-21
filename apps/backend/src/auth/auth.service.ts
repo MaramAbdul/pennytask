@@ -15,31 +15,31 @@ export class AuthService {
   ) {}
 
   async signup(dto: SignupDto) {
-    // ✅ Check if user already exists
+    //  Check if user already exists in our db
     const existingUser = await this.userModel.findOne({ email: dto.email });
     if (existingUser) {
       throw new BadRequestException('User already exists');
     }
 
-    // ✅ Hash password before storing
+    //  Hash password before save to the dv
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-    // ✅ Create new user
+    //  Create new user
     const user = new this.userModel({
-      name: dto.name, // ✅ Save name
+      name: dto.name, 
       email: dto.email,
       password: hashedPassword,
     });
 
     await user.save();
 
-    // ✅ Generate JWT token
+    //  Generate JWT token
     const token = this.jwtService.sign(
       { userId: user._id, email: user.email },
       { expiresIn: '8h' }
     );
 
-    // ✅ Return user details and token
+    // Return user details and token
     return {
       token,
       user: {
@@ -56,13 +56,13 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    // ✅ Generate JWT token
+    //  Generate JWT token
     const token = this.jwtService.sign(
       { userId: user._id, email: user.email },
       { expiresIn: '8h' }
     );
 
-    // ✅ Return user details along with token
+    //  Return user details along with token
     return {
       token,
       user: {
